@@ -1,7 +1,6 @@
 import logging
 import os
 
-from TemporaryStorage import TemporaryStorageInstance
 from typing import List, Optional
 from PIL import Image
 
@@ -21,7 +20,6 @@ class MockupEngineerInstance:
     def __init__(self):
         self.logger = logging.getLogger('MockupEngineer')
         self.templates: List[Device] = []
-        self.storage = TemporaryStorageInstance()
 
         for template in ALL_TEMPLATES:
             try:
@@ -49,8 +47,7 @@ class MockupEngineerInstance:
     def generate(self, template_id: str,
                  screenshot_path: str,
                  color: str = None,
-                 orientation: str = None,
-                 external_storage: bool = False) -> str:
+                 orientation: str = None) -> str:
         template = self.get_template(template_id)
 
         if not template:
@@ -93,13 +90,4 @@ class MockupEngineerInstance:
         mockup_path = os.path.join(generated_path, 'mockup-{}.png'.format(random_string(16)))
         placeholder_image.save(mockup_path)
 
-        if not external_storage:
-            return mockup_path
-        else:
-            uploaded = self.storage.upload(mockup_path)
-
-            if uploaded and uploaded.url:
-                os.remove(mockup_path)
-                return uploaded.url
-            else:
-                return mockup_path
+        return mockup_path

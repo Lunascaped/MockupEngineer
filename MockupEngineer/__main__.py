@@ -70,7 +70,7 @@ class Main:
                               (color, template))
         cls()
         print('Generating...')
-        url = self.mockup.generate(screenshot_path=path, template_id=template.id, color=color, external_storage=True)
+        url = self.mockup.generate(screenshot_path=path, template_id=template.id, color=color)
         cls()
         print('Success: {}'.format(url))
         webbrowser.open(url)
